@@ -50,13 +50,17 @@ module I2C
       return ret
     end
 
-    private
+    # private
     def initialize(device_path)
       @device = File.new(device_path, 'r+')
       puts " initialize => @device.class = #{@device.class}"
       # change the sys* functions of the file object to meet our requirements
       class << @device
         alias :syswrite_orig :syswrite
+        puts "var => #{var} => var.class = #{var.class}"
+        puts "syswrite.class = #{syswrite.class}"
+        puts "syswrite_orig.class = #{syswrite_orig.class}"
+        puts "@device => #{@device} => @device.class = #{@device.class}"
         def syswrite(var)
           puts "def syswrite(var) => syswrite(#{var}) = syswrite.class = #{syswrite.class}"
           puts " syswrite_orig.class = #{syswrite_orig.class}"
