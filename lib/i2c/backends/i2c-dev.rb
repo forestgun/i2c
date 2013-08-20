@@ -46,7 +46,7 @@ module I2C
       puts "Read(address, size) = read(#{address},#{size})"
       write(address, *params)
       ret = @device.sysread(size)
-      pust " ret => #{ret}"
+      puts " ret => #{ret}"
       return ret
     end
 
@@ -55,6 +55,7 @@ module I2C
       @device = File.new(device_path, 'r+')
       puts " initialize => @device.class = #{@device.class}"
       # change the sys* functions of the file object to meet our requirements
+=begin
       class << @device
         alias :syswrite_orig :syswrite
 
@@ -65,7 +66,7 @@ module I2C
           puts "var => #{var} => var.class = #{var.class}"
           puts "def syswrite(var) => syswrite(#{var}) = syswrite.class = #{syswrite.class}"
           puts " syswrite_orig.class = #{syswrite_orig.class}"
-	  begin
+	        begin
             syswrite_orig var
           rescue Errno::EREMOTEIO
             raise AckError, "No acknowledge received"
@@ -80,6 +81,7 @@ module I2C
           end
         end
       end # class
+=end
     end # initialize
   end
 end
