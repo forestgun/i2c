@@ -12,7 +12,7 @@
 # License Version 2.
 #
 
-require 'i2c/backends/i2c-dev.rb'
+require_relative 'backends/i2c-dev.rb'
 
 module I2C
   # some common error classes

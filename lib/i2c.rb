@@ -6,9 +6,9 @@
 # License Version 2.
 # 
 
-require 'i2c/i2c.rb'
-require 'i2c/backends/i2c-dev.rb'
-require 'i2c/drivers/mcp230xx.rb'
+require_relative 'i2c/i2c.rb'
+require_relative 'i2c/backends/i2c-dev.rb'
+#require_relative 'i2c/drivers/mcp230xx.rb'
 #require 'i2c/drivers/mcp23017.rb'
 
 

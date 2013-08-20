@@ -9,12 +9,14 @@
 module I2C
   class Dev
     # see i2c-dev.h
-    I2C_SLAVE = 0x0703
+      I2C_SLAVE = 0x0703
 
     def self.create(device_path)
+      puts "I2C-DEV.RB :: self.create(device_path)"
       raise Errno::ENOENT, "Device #{device_path} not found." unless File.exists?(device_path)
       @instances ||= Hash.new
       @instances[device_path] = Dev.new(device_path) unless @instances.has_key?(device_path)
+      puts "I2C-DEV.RB :: self.create(#{device_path}) @instances.class => #{@instances.class}"
       @instances[device_path]
     end
 
@@ -30,7 +32,9 @@ module I2C
       params.each do |value|
         data << value
       end
+      puts " write(address, *params) => write(#{address},#{data}) "
       @device.ioctl(I2C_SLAVE, address)
+      #@device.ioctl(address)
       @device.syswrite(data)
     end
 
@@ -39,19 +43,24 @@ module I2C
     # String#unpack afterwards
     def read(address, size, *params)
       ret = ""
+      puts "Read(address, size) = read(#{address},#{size})"
       write(address, *params)
       ret = @device.sysread(size)
+      pust " ret => #{ret}"
       return ret
     end
 
     private
     def initialize(device_path)
       @device = File.new(device_path, 'r+')
+      puts " initialize => @device.class = #{@device.class}"
       # change the sys* functions of the file object to meet our requirements
       class << @device
         alias :syswrite_orig :syswrite
         def syswrite(var)
-          begin
+          puts "def syswrite(var) => syswrite(#{var}) = syswrite.class = #{syswrite.class}"
+          puts " syswrite_orig.class = #{syswrite_orig.class}"
+	  begin
             syswrite_orig var
           rescue Errno::EREMOTEIO
             raise AckError, "No acknowledge received"
