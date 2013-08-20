@@ -57,11 +57,12 @@ module I2C
       # change the sys* functions of the file object to meet our requirements
       class << @device
         alias :syswrite_orig :syswrite
-        puts "var => #{var} => var.class = #{var.class}"
+
         puts "syswrite.class = #{syswrite.class}"
         puts "syswrite_orig.class = #{syswrite_orig.class}"
         puts "@device => #{@device} => @device.class = #{@device.class}"
         def syswrite(var)
+          puts "var => #{var} => var.class = #{var.class}"
           puts "def syswrite(var) => syswrite(#{var}) = syswrite.class = #{syswrite.class}"
           puts " syswrite_orig.class = #{syswrite_orig.class}"
 	  begin
